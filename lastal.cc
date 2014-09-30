@@ -831,7 +831,7 @@ void lastal( int argc, char** argv ){
 
   std::ofstream outFileStream;
   std::ostream& out = openOut( args.outFile, outFileStream );
-  writeHeader( refSequences, refLetters, out );
+  //writeHeader( refSequences, refLetters, out );
   out.precision(3);  // print non-integers more compactly
   countT queryBatchCount = 0;
 
@@ -844,12 +844,12 @@ void lastal( int argc, char** argv ){
   for( char** i = *inputBegin ? inputBegin : defaultInput; *i; ++i ){
     std::ifstream inFileStream;
     std::istream& in = openIn( *i, inFileStream );
-    LOG( "reading " << *i << "..." );
+    //LOG( "reading " << *i << "..." );
 
     while( appendFromFasta( in ) ){
       if( !query.isFinished() ){
         // this enables downstream parsers to read one batch at a time:
-        out << "# batch " << queryBatchCount++ << "\n";
+        // out << "# batch " << queryBatchCount++ << "\n";
        	scanAllVolumes( volumes, out );
 	    query.reinitForAppending();
       }
@@ -857,13 +857,13 @@ void lastal( int argc, char** argv ){
   }
 
   if( query.finishedSequences() > 0 ){
-    out << "# batch " << queryBatchCount << "\n";
+    //out << "# batch " << queryBatchCount << "\n";
     scanAllVolumes( volumes, out );
   }
 
   out.precision(6);  // reset the precision to the default value
-  out << "# CPU time: " << (std::clock() - startTime + 0.0) / CLOCKS_PER_SEC
-      << " seconds\n";
+  //out << "# CPU time: " << (std::clock() - startTime + 0.0) / CLOCKS_PER_SEC
+  //    << " seconds\n";
   if (!flush(out)) ERR( "write error" );
 }
 
